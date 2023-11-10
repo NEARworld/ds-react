@@ -29,4 +29,5 @@ const StyledData = styled.div`
 `;
 const StyledNext = styled.div`
   flex: 1;
+  border-left: 1px black solid;
 `;
