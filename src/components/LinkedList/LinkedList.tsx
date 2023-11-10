@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { SinglyLinkedList } from "../../ds/LinkedLists/SinglyLinkedList";
-import { Node } from "../../ds/LinkedLists/Node";
 
 type Operation = "append";
 const operations: Operation[] = ["append"];
@@ -10,17 +9,6 @@ export const LinkedList = () => {
   const [Slist, setSlist] = useState(new SinglyLinkedList());
   const [value, setValue] = useState("");
   const [isOperationStarted, setIsOperationStarted] = useState(false);
-  const [nodes, setNodes] = useState<Node[]>();
-
-  useEffect(() => {
-    const tempNodes = [];
-    for (const node of Slist.traverse()) {
-      tempNodes.push(node);
-    }
-    setNodes([...tempNodes]);
-  }, [isOperationStarted]);
-
-  console.log(Array.from(Slist.traverse()));
 
   const executeOperation = (operation: Operation) => {
     setIsOperationStarted(!isOperationStarted);
@@ -35,17 +23,16 @@ export const LinkedList = () => {
 
   const renderLinkedList = useCallback(() => {
     if (Slist.head === null) return null;
-    if (nodes)
-      return nodes.map((node, idx) => (
-        <Fragment key={idx}>
-          <StyledNode>
-            <StyledData>{node.value}</StyledData>
-            <StyledNext></StyledNext>
-          </StyledNode>
-          <span>{"->"}</span>
-        </Fragment>
-      ));
-  }, [nodes]);
+    return Array.from(Slist.traverse()).map((node, idx) => (
+      <Fragment key={idx}>
+        <StyledNode>
+          <StyledData>{node.value}</StyledData>
+          <StyledNext></StyledNext>
+        </StyledNode>
+        <span>{"->"}</span>
+      </Fragment>
+    ));
+  }, [isOperationStarted]);
 
   return (
     <StyledContainer>
